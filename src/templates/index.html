@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Next Word Predictor</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f0f0f5;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
+      h1 {
+        color: #333;
+      }
+      input {
+        padding: 10px;
+        width: 300px;
+        font-size: 16px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+      }
+      #prediction {
+        font-weight: bold;
+        font-size: 18px;
+        color: #0066cc;
+      }
+      .container {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Next Word Predictor</h1>
+      <input
+        type="text"
+        id="seqInput"
+        placeholder="Type a sequence of words..."
+      />
+      <p>Predicted next word: <span id="prediction">...</span></p>
+    </div>
+
+    <script>
+      const inputBox = document.getElementById("seqInput");
+      const prediction = document.getElementById("prediction");
+
+      inputBox.addEventListener("input", async () => {
+        const seq = inputBox.value
+          .trim()
+          .split(" ")
+          .filter((w) => w.length > 0);
+        if (seq.length === 0) {
+          prediction.innerText = "...";
+          return;
+        }
+        const response = await fetch("/predict", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ sequence: seq }),
+        });
+        const data = await response.json();
+        prediction.innerText = data.predicted_word;
+      });
+    </script>
+  </body>
+</html>
