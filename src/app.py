@@ -3,7 +3,7 @@ from flask import Flask, jsonify, render_template, request
 from lstm import LongShortTermRNN
 from utils import one_hot
 
-text = "Hello how are you Hi I am Ubaid"
+text = "Hello how are you"
 words = list(set(text.split()))
 word_to_index = {w: i for i, w in enumerate(words)}
 index_to_word = {i: w for w, i in word_to_index.items()}

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Next Word Predictor</title>
+    <title>LSTM Sentence Auto Complete</title>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -39,7 +39,7 @@
   </head>
   <body>
     <div class="container">
-      <h1>Next Word Predictor</h1>
+      <h1>LSTM Sentence Auto Complete</h1>
       <input
         type="text"
         id="seqInput"
@@ -52,7 +52,12 @@
       const inputBox = document.getElementById("seqInput");
       const prediction = document.getElementById("prediction");
 
-      inputBox.addEventListener("input", async () => {
+      function append_word_to_input(word) {
+        inputBox.value += " " + word;
+        predict_next_word();
+      }
+
+      async function predict_next_word() {
         const seq = inputBox.value
           .trim()
           .split(" ")
@@ -67,8 +72,12 @@
           body: JSON.stringify({ sequence: seq }),
         });
         const data = await response.json();
-        prediction.innerText = data.predicted_word;
-      });
+        prediction.innerHTML = `
+          <span style="cursor: pointer" onclick="append_word_to_input('${data.predicted_word}')">${data.predicted_word}</span>
+        `;
+      }
+
+      inputBox.addEventListener("input", predict_next_word);
     </script>
   </body>
 </html>
