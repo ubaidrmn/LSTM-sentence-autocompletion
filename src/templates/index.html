@@ -53,7 +53,7 @@
       const prediction = document.getElementById("prediction");
 
       function append_word_to_input(word) {
-        inputBox.value += " " + word;
+        inputBox.value = inputBox.value.trimEnd() + " " + word;
         predict_next_word();
       }
 

@@ -3,7 +3,7 @@ from flask import Flask, jsonify, render_template, request
 from lstm import LongShortTermRNN
 from utils import one_hot
 
-text = "Hello how are you"
+text = "She opened the window and watched the rain fall gently on the streets below."
 words = list(set(text.split()))
 word_to_index = {w: i for i, w in enumerate(words)}
 index_to_word = {i: w for w, i in word_to_index.items()}
@@ -19,7 +19,7 @@ for i in range(len(tokens) - seq_length):
     )
 
 lstm = LongShortTermRNN(
-    input_size=len(words), hidden_size=8, output_size=len(words), lr=0.1
+    input_size=len(words), hidden_size=16, output_size=len(words), lr=0.1
 )
 for epoch in range(1000):
     for x_seq, y_idx in data:
